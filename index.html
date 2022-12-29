@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Header of the file, contains the metadata and the links -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Tetris</title>
+    <link
+        href="https://fonts.googleapis.com/css?family=Press+Start+2P" 
+        rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<!-- Main HTML body, which contains the page defs and loaded js files -->
+<body>
+    <!-- Main div to contain the main Tetris game -->
+    <div class="main">
+        <div class="title">
+            <h1>TETRIS</h1>
+        </div>
+        <div class="grid">
+            <!-- Game board, to play tetris on -->
+            <canvas id="board" class="game-board"></canvas>
+            <!-- Next and stored piece displays -->
+            <div class="mid-column">
+                <div>
+                    <!-- Next piece display -->
+                    <h2>NEXT PIECE</h2>
+                    <canvas id="next" class="next"></canvas>
+                    <!-- Storage container for pieces-->
+                    <h2>STORAGE</h2>
+                    <canvas id="storage" class="storage"></canvas>
+                </div>
+            </div>
+            <!-- Current player statistics -->
+            <div class="right-column">
+                <div class="stats">
+                    <h3>Player Stats</h3>
+                    <p>Score: <span id="score">0</span> </p>
+                    <p>Lines: <span id="lines">0</span> </p>
+                    <p>Level: <span id="level">0</span> </p>
+                </div>
+                <div class="ctrls">
+                    <p>w/up: rorate</p>
+                    <p>a/left: left</p>
+                    <p>d/right: right</p>
+                    <p>s/down: slow drop</p>
+                    <p>space: fast drop</p>
+                    <p>shift: switch storage</p>
+                </div>
+            </div>
+        </div>
+        <div class="play-area">
+            <button onclick="play()" class="play-button">Play</button>
+        </div>
+    
+        <!-- The js files to run the tetris need to be included -->
+        <script type="text/javascript" src="constants.js"></script>
+        <script type="text/javascript" src="board.js"></script>
+        <script type="text/javascript" src="piece.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+    </div>
+</body>
+</html>

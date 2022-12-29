@@ -1,0 +1,68 @@
+* {
+    font-family: 'Press Start 2P', cursive;
+  }
+  
+  .main {
+    max-width: 720px;
+    background-color: #efefef;
+    border: solid 1px;
+    padding: 10px;
+  }
+
+  .title {
+    text-align: center;
+    background-color: #262626;
+    color: #efefef;
+    padding: 5px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 320px 190px 190px;
+    padding: 20px 5px;
+  }
+  
+  .right-column {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .mid-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .game-board {
+    border: solid 2px;
+    background-color: #fafafa;
+  }
+  
+  .play-button {
+    background-color: #32c937;
+    font-size: 16px;
+    padding: 12px 120px;
+    cursor: pointer;
+    display: block;
+    margin: auto;
+  }
+  
+  .next {
+    border: solid 1px;
+    background-color: #fafafa;
+  }
+
+  .storage {
+    border: solid 1px;
+    background-color: #fafafa;
+  }
+
+  .ctrls {
+    background-color: #c5c5c5;
+    padding: 5px;
+    border: solid 2px #404040;
+  }
+
+  .play-area {
+    margin: auto;
+  }
