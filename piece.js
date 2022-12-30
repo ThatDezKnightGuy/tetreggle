@@ -2,7 +2,6 @@ class Piece {
     x;
     y;
     color;
-    edge;
     shape;
     name;
     typeId;
@@ -15,11 +14,11 @@ class Piece {
 
     // Initialise a new piece on construction
     init() {
-        this.typeId = Piece.randomizeTetronimoType(COLORS.length)
-        this.color = COLORS[this.typeId];
-        this.shape = SHAPES[this.typeId];
-        this.name = NAMES[this.typeId];
-    
+        this.typeId = Piece.randomizeTetronimoType(Piece.COLORS.length)
+        this.color = Piece.COLORS[this.typeId];
+        this.shape = Piece.SHAPES[this.typeId];
+        this.name = Piece.NAMES[this.typeId];
+
         // Starting position
         this.setDisplayPosition()
     }
@@ -40,6 +39,8 @@ class Piece {
     // Draws the piece on the board grid
     draw() {
         this.context.fillStyle = this.color;
+        this.context.strokeStyle = Piece.gridColor;
+        this.context.lineWidth = Piece.gridLineWidth;
         this.shape.forEach((row, y) => {
             row.forEach((value,x) => {
                 // This.x, this.y are the top left corner coords
@@ -113,4 +114,65 @@ class Piece {
 
         return '#' + (g | (b << 8) | (r << 16)).toString(16);
     }
+
+    static gridColor = '#404040';  // TODO: per-colour choices
+    static gridLineWidth = 0.06
+
+    static COLORS = [
+        '#00ffff',
+        '#0000ff',
+        '#ffa500',
+        '#FFFF00',
+        '#008000',
+        '#800080',
+        '#FF0000'
+    ];
+    
+    static NAMES = [
+        "I",
+        "J",
+        "L",
+        "O",
+        "S",
+        "T",
+        "Z"
+    ]
+    
+    static SHAPES =[
+        [
+            [0, 0, 0, 0],
+            [1, 1, 1, 1],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0]
+        ],
+        [
+            [2, 0, 0],
+            [2, 2, 2],
+            [0, 0, 0]
+        ],
+        [
+            [0, 0, 3],
+            [3, 3, 3],
+            [0, 0, 0]
+        ],
+        [
+            [4, 4],
+            [4, 4]
+        ],
+        [
+            [0, 5, 5],
+            [5, 5, 0],
+            [0, 0, 0]
+        ],
+        [
+            [0, 6, 0],
+            [6, 6, 6],
+            [0, 0, 0]
+        ],
+        [
+            [7, 7, 0],
+            [0, 7, 7],
+            [0, 0, 0]
+        ]
+    ];
 }

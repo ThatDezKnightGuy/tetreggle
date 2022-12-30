@@ -14,9 +14,9 @@ class Board {
         this.context = context;
         this.nextContext = nextContext;
         this.storageContext = storageContext;
-        this.init_context(this.context, COLS, ROWS, BLOCK_SIZE);
-        this.init_context(this.nextContext, 4, 4, BLOCK_SIZE);
-        this.init_context(this.storageContext, 4, 4, BLOCK_SIZE);
+        this.init_context(this.context, Board.COLS, Board.ROWS, Board.BLOCK_SIZE);
+        this.init_context(this.nextContext, 4, 4, Board.BLOCK_SIZE);
+        this.init_context(this.storageContext, 4, 4, Board.BLOCK_SIZE);
     }
 
     // General piece movements, controlled by the board
@@ -27,12 +27,18 @@ class Board {
         "pieceDown": piece => ({ ...piece, y: piece.y + 1 })
     }
 
+    static COLS = 10;  // width of game board, in BLOCK_SIZEs
+    static ROWS = 20;  // length of game board, in BLOCK_SIZEs
+    static BLOCK_SIZE = 30;  // Size of a comonent tetronimo block, in pixels
+    static gridColor = '#262626'
+    static gridLineWidth = 0.01
+
     // Get a zeroes matrix, which represents the board
     // For each row, we run the map function which returns
     // a col width array of zeroes
     static getEmptyBoard() {
         return Array.from(
-            {length: ROWS}, () => Array(COLS).fill(0)
+            {length: Board.ROWS}, () => Array(Board.COLS).fill(0)
         );
     }
 
@@ -65,9 +71,8 @@ class Board {
         // As tetronimos are made of squares, then x = y = BLOCKSIZE
         context.scale(blocks, blocks);
         // Set linewidth
-        context.lineWidth = 0.01;
-        context.strokeStyle = '#262626';
-
+        context.lineWidth = Board.gridLineWidth;
+        context.strokeStyle = Board.gridColor;
     }
 
     // Resets the board and adds a new piece
@@ -81,20 +86,26 @@ class Board {
 
     // Draws all board items that must update from animation
     draw() {
-        this.piece.draw();
         this.drawBoard();
+        this.piece.draw();
     }
 
     // Draw the current board state
     drawBoard() {
+        this.context.strokeStyle = Board.gridColor;
         this.grid.forEach((row, y) => {
             row.forEach((value, x) => {
                 if (value > 0) {
                     // Indexes on 0
-                    this.context.fillStyle = COLORS[value-1];
+                    this.context.fillStyle = Piece.COLORS[value-1];
                     this.context.fillRect(x, y, 1, 1);
-                    this.context.strokeRect(x, y, 1, 1);
+                    this.context.lineWidth = Piece.gridLineWidth;
+                    this.context.strokeStyle = Piece.gridColor;
+                } else {
+                    this.context.lineWidth = Board.gridLineWidth;
+                    this.context.strokeStyle = Board.gridColor;
                 }
+                this.context.strokeRect(x, y, 1, 1);
             });
         });
     }
@@ -146,7 +157,7 @@ class Board {
                 this.grid.splice(y, 1);
 
                 // Add a new row of zeroes
-                this.grid.unshift(Array(COLS).fill(0));
+                this.grid.unshift(Array(Board.COLS).fill(0));
             }
         });
         if (nLines > 0) {
@@ -226,11 +237,11 @@ class Board {
     }
 
     insideWalls(x) {
-        return x >= 0 && x < COLS;
+        return x >= 0 && x < Board.COLS;
     }
 
     aboveFloor(y) {
-        return y < ROWS;
+        return y < Board.ROWS;
     }
 
     canFreeze(x, y) {
