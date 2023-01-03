@@ -74,6 +74,7 @@ function onKeyPress(event) {
     // Store the tetronimo
     if (event.key === 'Shift'){
         tetrisBoard.switchTetronimos();
+        peggleBoard.fire();
     }
     // Movement event
     if (eventKeyToMoves[event.key]) {
@@ -150,6 +151,7 @@ function animate(now = 0) {
             gameOver();
             return;
         }
+        peggleBoard.applyPhysics(1);
     }
 
     // Redraw the board state, and request another animation

@@ -22,22 +22,22 @@ This is a tetris implementation in js, based on this [tutorial from Michael Kare
 1. B/W mode
 1. Colourblind mode
 1. Tile counter for tetronimo generation
-  - This is for the peggle integration
+    - This is for the peggle integration
 1. Multiple piece drop
 1. Pause
 1. Render on single `canvas`
-  - This requires deeper understanding of the `canvas` environment 
+    - This requires deeper understanding of the `canvas` environment 
 
 ### Tetris: Known bugs
 
 1. Swapping in `O` and `I` blocks can clip a block through the edge of the board and it will get trapped on rerender
-  - Need to check the rotation and reposition the piece `x` position so it's not clipping
+    - Need to check the rotation and reposition the piece `x` position so it's not clipping
 
 ----
 
 ## Peggle
 
-TBC
+This is based on some basic interactions from [this codesandbox instance from xodial](https://codesandbox.io/s/7m8u6). The board generation logic, and the class-based movement logic is inspired, but based on motion equations.
 
 ----
 

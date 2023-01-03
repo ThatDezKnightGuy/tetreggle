@@ -15,14 +15,7 @@ class Pin {
 
     constructor(context, boardWidth, boardHeight, size) {
         this.context = context
-        this.x = Math.floor(Math.random() * boardWidth);
-        this.y = Math.floor(Math.random() * boardHeight);
-        this.size = size;
-        this.color = Pin.pinColors[Pin.randomizePinColor(Pin.pinColors.length)];
-        this.points = 100;
-        this.type = 'test';
-        this.path = new Path2D();
-        this.path.ellipse(this.x, this.y, this.size, this.size, Math.PI / 4, 0, 2 * Math.PI);
+        this.init(boardWidth, boardHeight, size)
     }
 
     static pinColors = [
@@ -37,6 +30,17 @@ class Pin {
     
     static randomizePinColor(nOptions) {
         return Math.floor(Math.random() * nOptions);
+    }
+
+    init(boardWidth, boardHeight, size) {
+        this.x = Math.floor(Math.random() * boardWidth);
+        this.y = Math.floor(Math.random() * boardHeight);
+        this.size = size;
+        this.color = Pin.pinColors[Pin.randomizePinColor(Pin.pinColors.length)];
+        this.points = 100;
+        this.type = 'test';
+        this.path = new Path2D();
+        this.path.ellipse(this.x, this.y, this.size, this.size, Math.PI / 4, 0, 2 * Math.PI);
     }
 
     draw() {

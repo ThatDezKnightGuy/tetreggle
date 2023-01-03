@@ -42,6 +42,8 @@ class PeggleBoard {
             this.pinsOnBoard.push(new Pin(this.context, this.width, this.height, 5));
         }
         console.log(this.pinsOnBoard);
+        this.cannon = new Cannon(this.context, this.width/2, 5);
+        this.ball = new Ball(this.context, this.width/2, 5);
     }
 
     // Draw the peggle board, ball, and cannon for animation
@@ -55,5 +57,23 @@ class PeggleBoard {
         this.pinsOnBoard.forEach(pin => {
             pin.draw();
         });
+        this.cannon.draw();
+        this.ball.draw();
+    }
+
+    fire() {
+        if (this.ball.canFire) {
+            let dx = this.cannon.firingVelocity * Math.sin(this.cannon.angle * PeggleBoard.deg_to_rad);
+            let dy = this.cannon.firingVelocity * Math.cos(this.cannon.angle * PeggleBoard.deg_to_rad);
+            this.ball.fire(dx, dy);
+        }
+    }
+
+    applyPhysics(t){
+        if (!this.ball.canFire){
+            let pos = Ball.movement(this.ball, t)
+            console.log(pos)
+            this.ball.move(pos)
+        }
     }
 }
