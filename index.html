@@ -15,52 +15,67 @@
 
 <!-- Main HTML body, which contains the page defs and loaded js files -->
 <body>
-    <!-- Main div to contain the main Tetris game -->
     <div class="main">
-        <div class="title">
-            <h1>TETRIS</h1>
-        </div>
-        <div class="grid">
-            <!-- Game board, to play tetris on -->
-            <canvas id="board" class="game-board"></canvas>
-            <!-- Next and stored piece displays -->
-            <div class="mid-column">
-                <div>
-                    <!-- Next piece display -->
-                    <h2>NEXT PIECE</h2>
-                    <canvas id="next" class="next"></canvas>
-                    <!-- Storage container for pieces-->
-                    <h2>STORAGE</h2>
-                    <canvas id="storage" class="storage"></canvas>
+        <!-- Main tetris div to contain the main Tetris game -->
+        <div class="main-tetris">
+            <div class="tetris-title">
+                <h1>TETRIS</h1>
+            </div>
+            <div class="tetris-grid">
+                <!-- Game board, to play tetris on -->
+                <canvas id="tetris" class="tetris-board"></canvas>
+                <!-- Next and stored piece displays -->
+                <div class="mid-column">
+                    <div>
+                        <!-- Next piece display -->
+                        <h2>NEXT PIECE</h2>
+                        <canvas id="next" class="next"></canvas>
+                        <!-- Storage container for pieces-->
+                        <h2>STORAGE</h2>
+                        <canvas id="storage" class="storage"></canvas>
+                    </div>
+                </div>
+                <!-- Current player statistics -->
+                <div class="right-column">
+                    <div class="stats">
+                        <h3>Player Stats</h3>
+                        <p>Score: <span id="score">0</span> </p>
+                        <p>Lines: <span id="lines">0</span> </p>
+                        <p>Level: <span id="level">0</span> </p>
+                    </div>
+                    <div class="ctrls">
+                        <p><b>w/up</b>: rorate</p>
+                        <p><b>a/left:</b> left</p>
+                        <p><b>d/right:</b> right</p>
+                        <p><b>s/down:</b> slow drop</p>
+                        <p><b>space:</b> fast drop</p>
+                        <p><b>shift:</b> switch storage</p>
+                    </div>
                 </div>
             </div>
-            <!-- Current player statistics -->
-            <div class="right-column">
-                <div class="stats">
-                    <h3>Player Stats</h3>
-                    <p>Score: <span id="score">0</span> </p>
-                    <p>Lines: <span id="lines">0</span> </p>
-                    <p>Level: <span id="level">0</span> </p>
-                </div>
-                <div class="ctrls">
-                    <p>w/up: rorate</p>
-                    <p>a/left: left</p>
-                    <p>d/right: right</p>
-                    <p>s/down: slow drop</p>
-                    <p>space: fast drop</p>
-                    <p>shift: switch storage</p>
-                </div>
+            <div class="play-area">
+                <button onclick="play()" class="play-button">Play</button>
             </div>
         </div>
-        <div class="play-area">
-            <button onclick="play()" class="play-button">Play</button>
+        <div class="main-peggle">
+            <div class="peggle-title">
+                <h1>PEGGLE</h1>
+            </div>
+            <!-- Peggle board, to play peggle on-->
+            <div class="peggle-grid">
+                <canvas id="peggle" class="peggle-board"></canvas>
+            </div>
         </div>
-    
-        <!-- The js files to run the tetris need to be included -->
-        <script type="text/javascript" src="tetris/constants.js"></script>
-        <script type="text/javascript" src="tetris/board.js"></script>
-        <script type="text/javascript" src="tetris/piece.js"></script>
-        <script type="text/javascript" src="main.js"></script>
     </div>
+    <!-- The js files to run the tetris need to be included -->
+    <script type="text/javascript" src="src/tetris/constants.js"></script>
+    <script type="text/javascript" src="src/tetris/tetrisBoard.js"></script>
+    <script type="text/javascript" src="src/tetris/tetronimo.js"></script>
+    <script type="text/javascript" src="src/peggle/peggleBoard.js"></script>
+    <script type="text/javascript" src="src/peggle/pin.js"></script>
+    <script type="text/javascript" src="src/peggle/cannon.js"></script>
+    <script type="text/javascript" src="src/peggle/ball.js"></script>
+    <script type="text/javascript" src="src/peggle/bucket.js"></script>
+    <script type="text/javascript" src="src/main.js"></script>
 </body>
 </html>
