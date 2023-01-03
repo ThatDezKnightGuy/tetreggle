@@ -1,25 +1,30 @@
 // Canvas definitions that will be passed as context to the board
-const canvas = document.getElementById('board');
+const canvas = document.getElementById('tetris');
 const context = canvas.getContext('2d');
 const nextCanvas = document.getElementById('next');
 const nextContext = nextCanvas.getContext('2d');
 const storageCanvas = document.getElementById('storage');
 const storageContext = storageCanvas.getContext('2d');
 
-// Initialise the board
-let board = new Board(context, nextContext, storageContext);
+const peggleCanvas = document.getElementById('peggle');
+const peggleContext = peggleCanvas.getContext('2d');
 
-// Piece movement functions mapped to the movement keys
+// Initialise the tetrisBoard
+let tetrisBoard = new TetrisBoard(context, nextContext, storageContext);
+
+let peggleBoard = new PeggleBoard(peggleContext);
+
+// Tetronimo movement functions mapped to the movement keys
 const eventKeyToMoves = {
-    'ArrowLeft': Board.movements['pieceLeft'],
-    'ArrowRight': Board.movements['pieceRight'],
-    'ArrowDown': Board.movements['pieceDown'],
-    'ArrowUp': Board.movements['pieceRotate'],
-    'a': Board.movements['pieceLeft'],
-    'd': Board.movements['pieceRight'],
-    's': Board.movements['pieceDown'],
-    'w': Board.movements['pieceRotate'],
-    ' ': Board.movements['pieceDown'],
+    'ArrowLeft': TetrisBoard.movements['tetronimoLeft'],
+    'ArrowRight': TetrisBoard.movements['tetronimoRight'],
+    'ArrowDown': TetrisBoard.movements['tetronimoDown'],
+    'ArrowUp': TetrisBoard.movements['tetronimoRotate'],
+    'a': TetrisBoard.movements['tetronimoLeft'],
+    'd': TetrisBoard.movements['tetronimoRight'],
+    's': TetrisBoard.movements['tetronimoDown'],
+    'w': TetrisBoard.movements['tetronimoRotate'],
+    ' ': TetrisBoard.movements['tetronimoDown'],
 };
 
 
@@ -60,36 +65,36 @@ function eventListener() {
 function onKeyPress(event) {
     // Debug write the grid to the console
     if (event.key === 'c') {
-        board.debug();
+        tetrisBoard.debug();
     }
     // End the game
     if (event.key === 'Escape') {
         gameOver();
     }
-    // Store the piece
+    // Store the tetronimo
     if (event.key === 'Shift'){
-        board.switchPieces();
+        tetrisBoard.switchTetronimos();
     }
     // Movement event
     if (eventKeyToMoves[event.key]) {
         // Stop event bubbling - learn what this means
         event.preventDefault();
 
-        // get new piece state
-        let movedPiece = eventKeyToMoves[event.key](board.piece);
+        // get new tetronimo state
+        let movedTetronimo = eventKeyToMoves[event.key](tetrisBoard.tetronimo);
 
         // Hard drop on space, while the movement is valid
         if (event.key === ' ') {
             // Hard drop
-            while (board.valid(movedPiece)) {
+            while (tetrisBoard.valid(movedTetronimo)) {
                 account.score += POINTS.HARD_DROP;
-                board.piece.move(movedPiece);
-                movedPiece = eventKeyToMoves[event.key](board.piece);
+                tetrisBoard.tetronimo.move(movedTetronimo);
+                movedTetronimo = eventKeyToMoves[event.key](tetrisBoard.tetronimo);
             }
         // Otherwise, check the validity of the movement
-        } else if (board.valid(movedPiece)) {
-            // If valid, we move the piece
-            board.piece.move(movedPiece);
+        } else if (tetrisBoard.valid(movedTetronimo)) {
+            // If valid, we move the tetronimo
+            tetrisBoard.tetronimo.move(movedTetronimo);
             if (event.key === 'ArrowDown') {
                 account.score += POINTS.SOFT_DROP;
             }
@@ -102,12 +107,14 @@ function resetGame() {
     account.score = 0;
     account.lines = 0;
     account.level = 0;
-    board.reset();
+    tetrisBoard.reset();
     time = {
         start: performance.now(),
         elapsed: 0,
         level: LEVEL[account.level]
     };
+
+    peggleBoard.reset();
 }
 
 // Entry point to play the game
@@ -139,14 +146,14 @@ function animate(now = 0) {
     time.elapsed = now - time.start;
     if (time.elapsed > time.level) {
         time.start = now;
-        if (!board.drop()) {
+        if (!tetrisBoard.drop()) {
             gameOver();
             return;
         }
     }
 
-    // Clear the game board context, draw the board state, and request another animation
-    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-    board.draw();
+    // Redraw the board state, and request another animation
+    tetrisBoard.draw();
+    peggleBoard.draw();
     requestId = requestAnimationFrame(animate);
 }

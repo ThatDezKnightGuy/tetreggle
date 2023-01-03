@@ -1,4 +1,4 @@
-class Piece {
+class Tetronimo {
     x;
     y;
     color;
@@ -14,17 +14,17 @@ class Piece {
 
     // Initialise a new piece on construction
     init() {
-        this.typeId = Piece.randomizeTetronimoType(Piece.COLORS.length)
-        this.color = Piece.COLORS[this.typeId];
-        this.shape = Piece.SHAPES[this.typeId];
-        this.name = Piece.NAMES[this.typeId];
+        this.typeId = Tetronimo.randomizeTetronimoType(Tetronimo.COLORS.length)
+        this.color = Tetronimo.COLORS[this.typeId];
+        this.shape = Tetronimo.SHAPES[this.typeId];
+        this.name = Tetronimo.NAMES[this.typeId];
 
         // Starting position
         this.setDisplayPosition()
     }
 
     // Sets the main board position, for starting a drop
-    setBoardPosition() {
+    setTetrisBoardPosition() {
         this.x = (this.name === 'O') ? 4 : 3;
         this.y = (this.name === 'I') ? -1 : 0;
     }
@@ -39,8 +39,8 @@ class Piece {
     // Draws the piece on the board grid
     draw() {
         this.context.fillStyle = this.color;
-        this.context.strokeStyle = Piece.gridColor;
-        this.context.lineWidth = Piece.gridLineWidth;
+        this.context.strokeStyle = Tetronimo.gridColor;
+        this.context.lineWidth = Tetronimo.gridLineWidth;
         this.shape.forEach((row, y) => {
             row.forEach((value,x) => {
                 // This.x, this.y are the top left corner coords

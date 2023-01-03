@@ -1,22 +1,51 @@
 * {
     font-family: 'Press Start 2P', cursive;
   }
-  
+
   .main {
-    max-width: 720px;
+    display: grid;
+    grid-template-columns: 720px 720px;
     background-color: #efefef;
     border: solid 1px;
+    padding: 5px;
+    width: 1440px;
+  }
+
+  .main-peggle {
+    max-width: 720px;
     padding: 10px;
   }
 
-  .title {
+  .peggle-title {
     text-align: center;
     background-color: #262626;
     color: #efefef;
     padding: 5px;
   }
 
-  .grid {
+  .peggle-grid {
+    padding: 20px 5px;
+    text-align: center;
+  }
+
+  .peggle-board {
+    border: solid 2px;
+    background-color: #fafafa;
+  }
+
+  .main-tetris {
+    max-width: 720px;
+    padding: 10px;
+  }
+
+  .tetris-title {
+    text-align: center;
+    background-color: #262626;
+    color: #efefef;
+    padding: 5px;
+  }
+
+  .tetris-grid {
     display: grid;
     grid-template-columns: 320px 190px 190px;
     padding: 20px 5px;
@@ -25,19 +54,20 @@
   .right-column {
     display: flex;
     flex-direction: column;
+    max-width: 160px;
   }
-  
+
   .mid-column {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
-  
-  .game-board {
+
+  .tetris-board {
     border: solid 2px;
     background-color: #fafafa;
   }
-  
+
   .play-button {
     background-color: #32c937;
     font-size: 16px;
@@ -46,7 +76,7 @@
     display: block;
     margin: auto;
   }
-  
+
   .next {
     border: solid 1px;
     background-color: #fafafa;
@@ -61,8 +91,10 @@
     background-color: #c5c5c5;
     padding: 5px;
     border: solid 2px #404040;
+    max-width: 160px;
   }
 
   .play-area {
+    text-align: center;
     margin: auto;
   }
