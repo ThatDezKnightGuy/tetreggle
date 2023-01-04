@@ -13,6 +13,9 @@ class Pin {
     size;
     path;
 
+    uv;
+    proj;
+
     constructor(context, boardWidth, boardHeight, size) {
         this.context = context
         this.init(boardWidth, boardHeight, size)
@@ -46,5 +49,12 @@ class Pin {
     draw() {
         this.context.fillStyle = this.color;
         this.context.fill(this.path);
+
+        if (this.uv) {
+            this.proj = new Path2D();
+            this.proj.moveTo(this.x, this.y);
+            this.proj.lineTo(this.x + this.uv.x * this.size * 2, this.y + this.uv.y * this.size * 2);
+            this.context.stroke(this.proj);
+        }
     }
 }

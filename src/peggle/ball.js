@@ -19,18 +19,28 @@ class Ball {
     // On the cannon
     canFire;
 
-    constructor(context, cannonX, cannonY) {
+    constructor(context, cannonX, cannonY, size) {
         this.context = context;
         this.setCannonPosition(cannonX, cannonY)
         this.gravity = 1;
-        this.init();
+        this.init(size);
     }
 
-    static movement = (ball, t) => ({...ball, x: ball.x+ball.dx*t, y: ball.y+ball.dy*t, dy: ball.dy+ball.gravity*t})
+    static movement(ball, t) {
+        let temp = Ball.clone(ball);
 
-    init() {
+        temp.x += temp.dx * t;
+        temp.y += (temp.dy + 0.5 * temp.gravity * t) * t;
+        temp.dy += temp.gravity * t;
+
+        return temp;
+    }
+
+    static clone = (ball) => ({...ball})
+
+    init(size) {
         this.canFire = true;
-        this.size = 10;
+        this.size = size;
         this.color = '#404040';
         this.path = new Path2D();
         this.path.ellipse(this.x, this.y, this.size, this.size, Math.PI / 4, 0, 2 * Math.PI);

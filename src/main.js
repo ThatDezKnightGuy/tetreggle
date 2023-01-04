@@ -81,6 +81,14 @@ function onKeyPress(event) {
         // Stop event bubbling - learn what this means
         event.preventDefault();
 
+        // peggle move test
+        if (event.key === 'ArrowLeft'){
+            peggleBoard.move(-1);
+        }
+        if (event.key === 'ArrowRight'){
+            peggleBoard.move(1);
+        }
+
         // get new tetronimo state
         let movedTetronimo = eventKeyToMoves[event.key](tetrisBoard.tetronimo);
 
@@ -151,8 +159,11 @@ function animate(now = 0) {
             gameOver();
             return;
         }
-        peggleBoard.applyPhysics(1);
     }
+
+    // Peggle physics
+    peggleBoard.applyPhysics(0.1);
+    peggleBoard.checkBallReset();
 
     // Redraw the board state, and request another animation
     tetrisBoard.draw();
