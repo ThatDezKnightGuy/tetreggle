@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JavaScript Tetris</title>
+    <title>Tetreggle</title>
     <link
         href="https://fonts.googleapis.com/css?family=Press+Start+2P" 
         rel="stylesheet"
@@ -16,55 +16,57 @@
 <!-- Main HTML body, which contains the page defs and loaded js files -->
 <body>
     <div class="main">
-        <!-- Main tetris div to contain the main Tetris game -->
-        <div class="main-tetris">
-            <div class="tetris-title">
-                <h1>TETRIS</h1>
-            </div>
-            <div class="tetris-grid">
-                <!-- Game board, to play tetris on -->
-                <canvas id="tetris" class="tetris-board"></canvas>
-                <!-- Next and stored piece displays -->
-                <div class="mid-column">
-                    <div>
-                        <!-- Next piece display -->
-                        <h2>NEXT PIECE</h2>
-                        <canvas id="next" class="next"></canvas>
-                        <!-- Storage container for pieces-->
-                        <h2>STORAGE</h2>
-                        <canvas id="storage" class="storage"></canvas>
-                    </div>
+        <div class="main-boards">
+            <div class="main-peggle">
+                <div class="peggle-title">
+                    <h1>PEGGLE</h1>
                 </div>
-                <!-- Current player statistics -->
-                <div class="right-column">
-                    <div class="stats">
-                        <h3>Player Stats</h3>
-                        <p>Score: <span id="score">0</span> </p>
-                        <p>Lines: <span id="lines">0</span> </p>
-                        <p>Level: <span id="level">0</span> </p>
-                    </div>
-                    <div class="ctrls">
-                        <p><b>w/up</b>: rorate</p>
-                        <p><b>a/left:</b> left</p>
-                        <p><b>d/right:</b> right</p>
-                        <p><b>s/down:</b> slow drop</p>
-                        <p><b>space:</b> fast drop</p>
-                        <p><b>shift:</b> switch storage</p>
-                    </div>
+                <!-- Peggle board, to play peggle on-->
+                <div class="peggle-grid">
+                    <canvas id="peggle" class="peggle-board"></canvas>
                 </div>
             </div>
-            <div class="play-area">
-                <button onclick="play()" class="play-button">Play</button>
+            <!-- Main tetris div to contain the main Tetris game -->
+            <div class="main-tetris">
+                <div class="tetris-title">
+                    <h1>TETRIS</h1>
+                </div>
+                <div class="tetris-grid">
+                    <!-- Game board, to play tetris on -->
+                    <canvas id="tetris" class="tetris-board"></canvas>
+                    <!-- Next and stored piece displays -->
+                    <div class="mid-column">
+                        <div>
+                            <!-- Next piece display -->
+                            <h2>NEXT PIECE</h2>
+                            <canvas id="next" class="next"></canvas>
+                            <!-- Storage container for pieces-->
+                            <h2>STORAGE</h2>
+                            <canvas id="storage" class="storage"></canvas>
+                        </div>
+                    </div>
+                    <!-- Current player statistics -->
+                    <div class="right-column">
+                        <div class="stats">
+                            <h3>Player Stats</h3>
+                            <p>Score: <span id="score">0</span> </p>
+                            <p>Lines: <span id="lines">0</span> </p>
+                            <p>Level: <span id="level">0</span> </p>
+                        </div>
+                        <div class="ctrls">
+                            <p><b>w/up</b>: rorate</p>
+                            <p><b>a/left:</b> left</p>
+                            <p><b>d/right:</b> right</p>
+                            <p><b>s/down:</b> slow drop</p>
+                            <p><b>space:</b> fast drop</p>
+                            <p><b>shift:</b> switch storage</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="main-peggle">
-            <div class="peggle-title">
-                <h1>PEGGLE</h1>
-            </div>
-            <!-- Peggle board, to play peggle on-->
-            <div class="peggle-grid">
-                <canvas id="peggle" class="peggle-board"></canvas>
-            </div>
+        <div class="play-area">
+            <button onclick="play()" class="play-button">Play</button>
         </div>
     </div>
     <!-- The js files to run the tetris need to be included -->

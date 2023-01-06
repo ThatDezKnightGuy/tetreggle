@@ -2,12 +2,16 @@
     font-family: 'Press Start 2P', cursive;
   }
 
-  .main {
-    display: grid;
-    grid-template-columns: 720px 720px;
+  .main{
     background-color: #efefef;
     border: solid 1px;
     padding: 5px;
+    width: 1440px;
+  }
+
+  .main-boards {
+    display: grid;
+    grid-template-columns: 720px 720px;
     width: 1440px;
   }
 

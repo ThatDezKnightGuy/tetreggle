@@ -37,9 +37,10 @@ This is a tetris implementation in js, based on this [tutorial from Michael Kare
 
 ## Peggle
 
-This is based on some basic interactions from [this codesandbox instance from xodial](https://codesandbox.io/s/7m8u6). The board generation logic, and the class-based movement logic is inspired, but based on motion equations.
+This is based on some basic interactions from [this codesandbox instance from xodial](https://codesandbox.io/s/7m8u6). The board generation logic, and the class-based movement logic is inspired by the examples in this POC, but based on general motion equations.
 
 ----
 
 ## Notes
 
+a
