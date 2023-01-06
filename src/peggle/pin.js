@@ -12,33 +12,38 @@ class Pin {
     points;
     size;
     path;
+    isHit;
 
     uv;
     proj;
 
-    constructor(context, boardWidth, boardHeight, size) {
-        this.context = context
-        this.init(boardWidth, boardHeight, size)
+    constructor(context, pinX, pinY, size) {
+        this.context = context;
+        this.init(pinX, pinY, size);
     }
 
     static pinColors = [
-        '#00ffff',
-        '#0000ff',
-        '#ffa500',
-        '#FFFF00',
-        '#008000',
-        '#800080',
-        '#FF0000'
+        '#ffa500',  // Orange
+        '#0000ff',  // Blue
+        '#008000',  // Green
+        '#800080'   // Purple
     ];
     
     static randomizePinColor(nOptions) {
         return Math.floor(Math.random() * nOptions);
     }
 
-    init(boardWidth, boardHeight, size) {
-        this.x = Math.floor(Math.random() * boardWidth);
-        this.y = Math.floor(Math.random() * boardHeight);
+    static generateLegalPosition(boardHeight, size, roofOffset, baseOffset){
+        let range = boardHeight - 2 * size - roofOffset - baseOffset;
+        return Math.floor(Math.random() * range) + size + roofOffset;
+    }
+
+    init(pinX, pinY, size) {
+        this.y = pinY;
+        this.x = pinX;
         this.size = size;
+
+        this.isHit = false;
         this.color = Pin.pinColors[Pin.randomizePinColor(Pin.pinColors.length)];
         this.points = 100;
         this.type = 'test';
@@ -49,6 +54,14 @@ class Pin {
     draw() {
         this.context.fillStyle = this.color;
         this.context.fill(this.path);
+
+        if (this.isHit) {
+            this.context.lineWidth = 3.0;
+            this.context.strokeStyle = '#7ee0e6';
+            this.context.stroke(this.path);
+            this.context.strokeStyle = '#000000';
+            this.context.lineWidth = 1.0;
+        }
 
         if (this.uv) {
             this.proj = new Path2D();

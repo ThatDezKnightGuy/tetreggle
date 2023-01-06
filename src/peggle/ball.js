@@ -73,8 +73,10 @@ class Ball {
     }
 
     fire(dx, dy) {
-        this.dx = dx;
-        this.dy = dy;
-        this.canFire = false;
+        if (this.canFire) {
+            this.dx = dx;
+            this.dy = dy;
+            this.canFire = false;
+        }
     }
 }

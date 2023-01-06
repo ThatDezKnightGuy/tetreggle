@@ -1,6 +1,6 @@
 // Canvas definitions that will be passed as context to the board
-const canvas = document.getElementById('tetris');
-const context = canvas.getContext('2d');
+const tetrisCanvas = document.getElementById('tetris');
+const tetrisContext = tetrisCanvas.getContext('2d');
 const nextCanvas = document.getElementById('next');
 const nextContext = nextCanvas.getContext('2d');
 const storageCanvas = document.getElementById('storage');
@@ -10,9 +10,9 @@ const peggleCanvas = document.getElementById('peggle');
 const peggleContext = peggleCanvas.getContext('2d');
 
 // Initialise the tetrisBoard
-let tetrisBoard = new TetrisBoard(context, nextContext, storageContext);
+let tetrisBoard = new TetrisBoard(tetrisContext, nextContext, storageContext);
 
-let peggleBoard = new PeggleBoard(peggleContext);
+let peggleBoard = new PeggleBoard(peggleContext, 660, 600);
 
 // Tetronimo movement functions mapped to the movement keys
 const eventKeyToMoves = {
@@ -81,7 +81,7 @@ function onKeyPress(event) {
         // Stop event bubbling - learn what this means
         event.preventDefault();
 
-        // peggle move test
+        // peggle move test. TODO: Replace with move options and flip controls
         if (event.key === 'ArrowLeft'){
             peggleBoard.move(-1);
         }
@@ -143,11 +143,11 @@ function play() {
 // Ends the game
 function gameOver() {
     cancelAnimationFrame(requestId);
-    context.fillStyle = 'black';
-    context.fillRect(1, 3, 8, 1.2);
-    context.font = '1px Arial';
-    context.fillStyle = 'red';
-    context.fillText('GAME OVER', 1.8, 4);
+    tetrisContext.fillStyle = 'black';
+    tetrisContext.fillRect(1, 3, 8, 1.2);
+    tetrisContext.font = '1px Arial';
+    tetrisContext.fillStyle = 'red';
+    tetrisContext.fillText('GAME OVER', 1.8, 4);
 }
 
 // Animation controller, based on timer comparison
@@ -162,7 +162,7 @@ function animate(now = 0) {
     }
 
     // Peggle physics
-    peggleBoard.applyPhysics(0.1);
+    peggleBoard.applyPhysics(0.25);
     peggleBoard.checkBallReset();
 
     // Redraw the board state, and request another animation
