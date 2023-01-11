@@ -54,13 +54,20 @@ class PeggleBoard {
     reset() {
         this.pinsOnBoard = [];
         this.pinsInQueue = [];
-        this.cannon = new Cannon(this.context, this.width/2, 10, 30);
-        for (var i=0; i<25; ++i) {
+        let mid = this.width/2;
+        this.cannon = new Cannon(this.context, mid, 10, 30);
+        this.bucket = new Bucket(this.context, mid-80, this.height-25, 160, 30);
+        this.addPinsToBoard(25);
+        this.ballCount = 10;
+        this.resetBall(this.pinSize);
+    }
+
+    addPinsToBoard(nPins) {
+        nPins = nPins < 1 ? 1 : nPins;
+        for (var i=0; i<nPins; ++i) {
             // TODO: Generate the board as a series of blocks of pins, then generate the typing
             this.pinsOnBoard.push(this.generatePin(i));
         }
-        this.ballCount = 10;
-        this.resetBall(this.pinSize);
     }
 
     resetBall(size) {
@@ -79,6 +86,7 @@ class PeggleBoard {
             pin.draw();
         });
         this.cannon.draw();
+        this.bucket.draw();
         this.ball.draw();
     }
 
@@ -90,7 +98,32 @@ class PeggleBoard {
         }
     }
 
-    applyPhysics(t){
+    applyPhysics(t) {
+        this.applyBallPhysics(t);
+        this.applyBucketPhysics(t);
+    }
+
+    applyBucketPhysics(t) {
+        // TODO: Refactor to do use more bucket related functions
+        if (
+            this.bucket.x < 0
+        ) {
+            this.bucket.x = 0;
+            this.bucket.dx = -1 * this.bucket.dx;
+        }
+
+        if (
+            this.bucket.x > this.width - this.bucket.width
+        ) {
+            this.bucket.x = this.width - this.bucket.width;
+            this.bucket.dx = -1 * this.bucket.dx;
+        }
+
+        this.bucket.move(t)
+    }
+
+    applyBallPhysics(t){
+        // TODO: Refactor this to have more ball-related functions
         if (this.ball.canFire){
             return;
         }
