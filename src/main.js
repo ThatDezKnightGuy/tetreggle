@@ -83,10 +83,10 @@ function onKeyPress(event) {
 
         // peggle move test. TODO: Replace with move options and flip controls
         if (event.key === 'ArrowLeft'){
-            peggleBoard.move(-1);
+            peggleBoard.move(-5);
         }
         if (event.key === 'ArrowRight'){
-            peggleBoard.move(1);
+            peggleBoard.move(5);
         }
 
         // get new tetronimo state
