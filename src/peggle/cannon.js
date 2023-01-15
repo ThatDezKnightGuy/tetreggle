@@ -21,15 +21,15 @@ class Cannon{
     hasBall;
     firingVelocity;
 
-    constructor(context, cannonX, cannonY, size) {
+    constructor(context, cannonX, cannonY, size, angle) {
         this.context = context;
-        this.init(cannonX, cannonY, size);
+        this.init(cannonX, cannonY, size, angle);
     }
 
     static deg_to_rad = Math.PI / 180;
 
-    init(x, y, size) {
-        this.angle = 0;
+    init(x, y, size, angle) {
+        this.angle = angle;
         this.size = size;
         this.firingVelocity = 10;
         this.color = '#32c937';
