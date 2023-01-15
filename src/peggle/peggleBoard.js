@@ -4,6 +4,9 @@ class PeggleBoard {
     width;
     height;
 
+    // physics
+    dt
+
     // board reqs
     pinSize;
     cannon;
@@ -15,9 +18,14 @@ class PeggleBoard {
     pinsOnBoard;
     pinsInQueue;
 
-    constructor(context, width, height) {
+    // Obstacles
+    obstaclesOnBoard;
+
+    // TODO: Create super class for boardObjects
+
+    constructor(context, width, height, dt) {
         this.context = context;
-        this.init(this.context, width, height);
+        this.init(this.context, width, height, dt);
     }
 
     static deg_to_rad = Math.PI / 180;
@@ -35,6 +43,7 @@ class PeggleBoard {
     }
 
     static checkContact(ball1, ball2, buffer){
+        // NOTE: This is just for sphere-sphere physics
         buffer = !buffer ? 0 : buffer;  // Used for pin overlaps
         let totalX = ball1.x - ball2.x;
         let totalY = ball1.y - ball2.y;
@@ -42,10 +51,11 @@ class PeggleBoard {
         return (totalX * totalX + totalY * totalY <= compRad * compRad);
     }
 
-    init(context, width, height) {
+    init(context, width, height, dt) {
         this.width = width;
         this.height = height;
         this.pinSize = 10;
+        this.dt = dt
         context.canvas.width = width;
         context.canvas.height = height;
     }
@@ -54,9 +64,11 @@ class PeggleBoard {
     reset() {
         this.pinsOnBoard = [];
         this.pinsInQueue = [];
+        this.obstaclesOnBoard = [];
         let mid = this.width/2;
-        this.cannon = new Cannon(this.context, mid, 10, 30);
+        this.cannon = new Cannon(this.context, mid, 10, 30, 0);
         this.bucket = new Bucket(this.context, mid-80, this.height-25, 160, 30);
+        // this.obstaclesOnBoard.push(new Edge(this.context, mid-60, mid-60, 120, 120))
         this.addPinsToBoard(25);
         this.ballCount = 10;
         this.resetBall(this.pinSize);
@@ -76,7 +88,9 @@ class PeggleBoard {
 
     // Draw the peggle board, ball, and cannon for animation
     draw() {
+        // Clear the board for rerendering
         this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
+        // Render the board
         this.drawPeggleBoard();
     }
 
@@ -84,6 +98,9 @@ class PeggleBoard {
     drawPeggleBoard() {
         this.pinsOnBoard.forEach(pin => {
             pin.draw();
+        });
+        this.obstaclesOnBoard.forEach(obs => {
+            obs.draw();
         });
         this.cannon.draw();
         this.bucket.draw();
@@ -98,28 +115,15 @@ class PeggleBoard {
         }
     }
 
-    applyPhysics(t) {
-        this.applyBallPhysics(t);
-        this.applyBucketPhysics(t);
+    applyPhysics() {
+        this.applyBallPhysics(this.dt);
+        this.applyBucketPhysics(this.dt);
     }
 
     applyBucketPhysics(t) {
-        // TODO: Refactor to do use more bucket related functions
-        if (
-            this.bucket.x < 0
-        ) {
-            this.bucket.x = 0;
-            this.bucket.dx = -1 * this.bucket.dx;
-        }
-
-        if (
-            this.bucket.x > this.width - this.bucket.width
-        ) {
-            this.bucket.x = this.width - this.bucket.width;
-            this.bucket.dx = -1 * this.bucket.dx;
-        }
-
-        this.bucket.move(t)
+        let minX = 0;
+        let maxX = this.width - this.bucket.width;
+        this.bucket.applyPhysics(t, minX, maxX)
     }
 
     applyBallPhysics(t){
@@ -127,33 +131,13 @@ class PeggleBoard {
         if (this.ball.canFire){
             return;
         }
-        let pos = Ball.movement(this.ball, t);
-        let modified = false;
 
-        // Check if the ball hits a wall
-        if (
-            (this.ball.x + this.ball.size > this.width) ||
-            (this.ball.x - this.ball.size < 0)
-        ) {
-            pos.x = this.ball.x;
-            pos.y = this.ball.y;
-            pos.dx = -1 * this.ball.dx;
-            pos.dy = this.ball.dy;
-            modified = true;
-        }
+        // Walls
+        this.ball.applyRectPhysics(0, 0, this.width, this.height, false, false)
 
-        // Check if the ball hits the roof
-        if (this.ball.y - this.ball.size < 0) {
-            pos.x = this.ball.x;
-            pos.y = this.ball.y;
-            pos.dx = this.ball.dx;
-            pos.dy = -1 * this.ball.dy;
-            modified = true;
-        }
-
+        // Check cannon hit
         if (PeggleBoard.checkContact(this.ball, this.cannon)) {
-            pos = this.applyContact(pos, this.cannon);
-            modified = true;
+            this.ball.applySpherePhysics(this.cannon);
         }
 
         // Check if the ball hits a pin
@@ -168,36 +152,23 @@ class PeggleBoard {
             }
 
             // Then we update ball properties
-            pos = this.applyContact(pos, this.pinsOnBoard[i]);
-            modified = true;
+            this.ball.applySpherePhysics(this.pinsOnBoard[i]);
         }
-        // Otherwise, in freefall
-        if (modified) {
-            pos = Ball.movement(pos, t);
-        }
-        this.ball.move(pos);
-    }
 
-    applyContact(pos, boardObject) {
-        let dx = this.ball.x - boardObject.x;
-        let dy = this.ball.y - boardObject.y;
-        let compRad = this.ball.size + boardObject.size;
-        let uv = PeggleBoard.unitVector(
-            (dx * this.ball.size / compRad),
-            (dy * this.ball.size / compRad)
-        );
+        this.bucket.bucketEdge.forEach(edge => {
+            this.ball.applyRectPhysics(edge.x, edge.y, edge.width, edge.height, true)
+        })
+        this.obstaclesOnBoard.forEach(edge => {
+            this.ball.applyRectPhysics(edge.x, edge.y, edge.width, edge.height, true)
+        })
 
-        boardObject.uv = uv;
-        let dot = PeggleBoard.dotProduct(this.ball.dx, this.ball.dy, uv.x, uv.y);
-        pos.x = boardObject.x + uv.x * compRad;
-        pos.y = boardObject.y + uv.y * compRad;
-        pos.dx = (this.ball.dx - 2 * uv.x * dot) * 0.9;
-        pos.dy = (this.ball.dy - 2 * uv.y * dot) * 0.9;
-        return pos;
+        this.ball.move(t);
     }
 
     checkBallReset() {
-        if (this.ball.y > this.height){
+        // TODO: Add pin removal to ball reset
+        // TODO: Add ball counter logic to ball reset
+        if (this.ball.y > this.height + this.ball.size * 2){
             this.resetBall(this.pinSize);
             this.ballCount -= 1;
         }

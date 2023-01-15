@@ -12,7 +12,7 @@ const peggleContext = peggleCanvas.getContext('2d');
 // Initialise the tetrisBoard
 let tetrisBoard = new TetrisBoard(tetrisContext, nextContext, storageContext);
 
-let peggleBoard = new PeggleBoard(peggleContext, 660, 600);
+let peggleBoard = new PeggleBoard(peggleContext, 660, 600, 0.25);
 
 // Tetronimo movement functions mapped to the movement keys
 const eventKeyToMoves = {
@@ -162,7 +162,7 @@ function animate(now = 0) {
     }
 
     // Peggle physics
-    peggleBoard.applyPhysics(0.25);
+    peggleBoard.applyPhysics();
     peggleBoard.checkBallReset();
 
     // Redraw the board state, and request another animation
